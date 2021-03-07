@@ -6,6 +6,26 @@ from fractions import gcd
 def lcm(x, y):
     return (x * y) // fractions.gcd(x, y)
 
+"""約数を高速に列挙する"""
+def make_divisors(n):
+    lower_divisors , upper_divisors = [], []
+    i = 1
+    while i*i <= n:
+        if n % i == 0:
+            lower_divisors.append(i)
+            if i != n // i:
+                upper_divisors.append(n//i)
+        i += 1
+    return lower_divisors + upper_divisors[::-1]
+
+"""線分が交差しているか判定する"""
+def is_cross(A,B,C,D):# 線分ABと線分CD
+    t1 = (A[0] - B[0]) * (C[1] - A[1]) + (A[1] - B[1]) * (A[0] - C[0])
+    t2 = (A[0] - B[0]) * (D[1] - A[1]) + (A[1] - B[1]) * (A[0] - D[0])
+    t3 = (C[0] - D[0]) * (A[1] - C[1]) + (C[1] - D[1]) * (C[0] - A[0])
+    t4 = (C[0] - D[0]) * (B[1] - C[1]) + (C[1] - D[1]) * (C[0] - B[0])
+    # <=にすると接しているもTrueになる
+    return t1*t2<0 and t3*t4<0
 
 # DP
 # ナップサック
